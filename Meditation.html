@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meditation & Relaxation Recorder</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Meditation & Relaxation Recorder</h1>
+
+        <select id="audio-select">
+            <option value="audio_1.mp3">Audio 1</option>
+            <option value="audio_2.mp3">Audio 2</option>
+            <option value="audio_3.mp3">Audio 3</option>
+            <option value="audio_4.mp3">Audio 4</option>
+            <option value="audio_5.mp3">Audio 5</option>
+            <option value="audio_6.mp3">Audio 6</option>
+        </select>
+        <button id="play-selected">Play Selected</button>
+        <button id="play-random">Play Random</button>
+
+        <audio id="meditation-audio" controls>
+            <source src="audio_1.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+
+        <div class="controls">
+            <button id="start-timer">Start Timer</button>
+            <button id="stop-timer" disabled>Stop Timer</button>
+        </div>
+        <div class="timer-display">
+            <p>Meditation Time: <span id="meditation-time">0:00</span></p>
+        </div>
+    </div>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        audio {
+            margin: 20px 0;
+        }
+
+        .controls button, #play-selected, #play-random {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .controls button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .timer-display {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #555;
+        }
+
+        #audio-select {
+            margin: 10px;
+            padding: 5px;
+            font-size: 16px;
+        }
+    </style>
+
+    <script>
+        const startButton = document.getElementById('start-timer');
+        const stopButton = document.getElementById('stop-timer');
+        const timerDisplay = document.getElementById('meditation-time');
+        const audioElement = document.getElementById('meditation-audio');
+        const audioSelect = document.getElementById('audio-select');
+        const playSelectedButton = document.getElementById('play-selected');
+        const playRandomButton = document.getElementById('play-random');
+
+        let timerInterval;
+        let secondsElapsed = 0;
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        function startTimer() {
+            startButton.disabled = true;
+            stopButton.disabled = false;
+
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                timerDisplay.textContent = formatTime(secondsElapsed);
+            }, 1000);
+        }
+
+        function stopTimer() {
+            startButton.disabled = false;
+            stopButton.disabled = true;
+
+            clearInterval(timerInterval);
+        }
+
+        function playSelectedAudio() {
+            const selectedAudio = audioSelect.value;
+            audioElement.src = selectedAudio;
+            audioElement.play();
+        }
+
+        function playRandomAudio() {
+            const audioFiles = [
+                'audio_1.mp3',
+                'audio_2.mp3',
+                'audio_3.mp3',
+                'audio_4.mp3',
+                'audio_5.mp3',
+                'audio_6.mp3'
+            ];
+            const randomAudio = audioFiles[Math.floor(Math.random() * audioFiles.length)];
+            audioElement.src = randomAudio;
+            audioElement.play();
+        }
+
+        startButton.addEventListener('click', startTimer);
+        stopButton.addEventListener('click', stopTimer);
+        playSelectedButton.addEventListener('click', playSelectedAudio);
+        playRandomButton.addEventListener('click', playRandomAudio);
+    </script>
+</body>
+</html>
