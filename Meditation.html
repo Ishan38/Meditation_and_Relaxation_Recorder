@@ -29,6 +29,7 @@
         <div class="controls">
             <button id="start-timer">Start Timer</button>
             <button id="stop-timer" disabled>Stop Timer</button>
+            <button id="reset-timer" disabled>Reset Timer</button>
         </div>
         <div class="timer-display">
             <p>Meditation Time: <span id="meditation-time">0:00</span></p>
@@ -90,11 +91,20 @@
             padding: 5px;
             font-size: 16px;
         }
+
+        #reset-timer {
+            background-color: #f44336;
+        }
+
+        #reset-timer:disabled {
+            background-color: #ccc;
+        }
     </style>
 
     <script>
         const startButton = document.getElementById('start-timer');
         const stopButton = document.getElementById('stop-timer');
+        const resetButton = document.getElementById('reset-timer');
         const timerDisplay = document.getElementById('meditation-time');
         const audioElement = document.getElementById('meditation-audio');
         const audioSelect = document.getElementById('audio-select');
@@ -113,6 +123,7 @@
         function startTimer() {
             startButton.disabled = true;
             stopButton.disabled = false;
+            resetButton.disabled = false;
 
             timerInterval = setInterval(() => {
                 secondsElapsed++;
@@ -123,7 +134,17 @@
         function stopTimer() {
             startButton.disabled = false;
             stopButton.disabled = true;
+            resetButton.disabled = false;
 
+            clearInterval(timerInterval);
+        }
+
+        function resetTimer() {
+            startButton.disabled = false;
+            stopButton.disabled = true;
+            resetButton.disabled = true;
+            secondsElapsed = 0;
+            timerDisplay.textContent = '0:00';
             clearInterval(timerInterval);
         }
 
@@ -149,6 +170,7 @@
 
         startButton.addEventListener('click', startTimer);
         stopButton.addEventListener('click', stopTimer);
+        resetButton.addEventListener('click', resetTimer);
         playSelectedButton.addEventListener('click', playSelectedAudio);
         playRandomButton.addEventListener('click', playRandomAudio);
     </script>
